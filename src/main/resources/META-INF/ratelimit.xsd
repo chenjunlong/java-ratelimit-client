@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xsd:schema xmlns="http://www.github.com/schema/ratelimit"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:beans="http://www.springframework.org/schema/beans"
+            xmlns:tool="http://www.springframework.org/schema/tool"
+            targetNamespace="http://www.github.com/schema/ratelimit"
+            elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+    <xsd:import namespace="http://www.springframework.org/schema/beans"/>
+    <xsd:import namespace="http://www.springframework.org/schema/tool"/>
+
+
+    <xsd:element name="registered-driven">
+
+    </xsd:element>
+
+    <xsd:element name="annotation-scan">
+        <xsd:complexType>
+            <xsd:attribute name="base-package" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        <![CDATA[ Scan the package path of the interface that needs to be limited ]]>
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="mode" type="xsd:boolean" default="false">
+                <xsd:annotation>
+                    <xsd:documentation>
+                        <![CDATA[ matcher way mode=true match package.class.method ,mode=false match method ]]>
+                    </xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+        </xsd:complexType>
+    </xsd:element>
+
+</xsd:schema>
