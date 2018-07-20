@@ -15,7 +15,7 @@
     </dependency>   
 ```
 
-### Spring Web Controller 接口限流使用示例###
+### Spring Web Controller 接口限流使用示例 ###
 
 #### Annotation方式 ####
 ```
@@ -129,3 +129,39 @@ public class ExampleController {
     }
 }
 ```
+
+
+### Dubbo 接口限流使用示例 ###
+
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:ratelimit="http://www.github.com/schema/ratelimit"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.github.com/schema/ratelimit
+        http://www.github.com/schema/ratelimit/ratelimit.xsd">
+
+    <ratelimit:registered-driven/>
+    <ratelimit:annotation-scan base-package="com.chenjunlong.dubbo.api"/>
+</beans>
+```
+
+在com.alibaba.dubbo.rpc.Filter 中添加过滤器
+```
+DubboRateLimitFilter=com.github.jratelimit.filter.DubboRateLimitFilter
+```
+
+在Dubbo API中增加限流的注解
+```
+@RateLimit(defaultMethod = "sayHelloDefaultMethod")
+String sayHello();
+
+String sayHelloDefaultMethod();
+```
+
+
+### Demo ###
+https://github.com/chenjunlong/springboot-example
+https://github.com/chenjunlong/dubbo-example
