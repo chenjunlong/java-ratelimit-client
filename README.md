@@ -9,7 +9,7 @@
 
 ```
     <dependency>
-      <groupId>com.github.jratelimit</groupId>
+      <groupId>com.github.chenjunlong</groupId>
       <artifactId>java-ratelimit-client</artifactId>
       <version>1.0-SNAPSHOT</version>
     </dependency>   
