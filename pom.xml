@@ -15,6 +15,27 @@
         Java API rate limiting component
     </description>
 
+    <parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>7</version>
+    </parent>
+
+    <scm>
+        <url>https://github.com/chenjunlong/java-ratelimit-client</url>
+        <connection>git@github.com:chenjunlong/java-ratelimit-client.git</connection>
+        <developerConnection>git@github.com:chenjunlong/java-ratelimit-client.git</developerConnection>
+        <tag>1.0</tag>
+    </scm>
+    <developers>
+        <developer>
+            <name>chenjunlong</name>
+            <email>707208280@qq.com</email>
+            <organization>chenjunlong</organization>
+            <url>https://github.com/chenjunlong/java-ratelimit-client</url>
+        </developer>
+    </developers>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -112,4 +133,15 @@
             </plugin>
         </plugins>
     </build>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>sonatype-nexus-snapshots</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>sonatype-nexus-staging</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
 </project>
