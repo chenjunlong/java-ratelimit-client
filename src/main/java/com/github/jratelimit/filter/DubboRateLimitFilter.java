@@ -31,10 +31,14 @@ public class DubboRateLimitFilter implements Filter {
     private static Map<String, Object> defaultValueMaps = new ConcurrentHashMap<>();
 
     private DubboRateLimitHandler rateLimitHandler = getBean(DubboRateLimitHandler.class);
+    private RateLimitCallable rateLimitCallable = getBean(RateLimitCallable.class);;
 
     public DubboRateLimitFilter() throws IOException {
         if (null == rateLimitHandler) {
             rateLimitHandler = new LocalDubboRateLimitHandler();
+        }
+        if (null == rateLimitCallable) {
+            rateLimitCallable = new LocalRateLimitCallable();
         }
 
         Thread daemon = new Thread(() -> {
@@ -136,6 +140,7 @@ public class DubboRateLimitFilter implements Filter {
                 }
             }
             defaultValueMaps.put(rateLimitName, resultDefaultValue);
+            rateLimitCallable.call(interfaceName, methodName);
             return new RpcResult(resultDefaultValue);
         }
         return invoker.invoke(invocation);

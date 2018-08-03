@@ -16,9 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
@@ -33,14 +31,24 @@ public class ControllerRateLimitInterceptor implements HandlerInterceptor {
     private static Map<String, Object> defaultValueMaps = new ConcurrentHashMap<>();
 
     private ControllerRateLimitHandler rateLimitHandler;
+    private RateLimitCallable rateLimitCallable;
 
     public ControllerRateLimitInterceptor() throws IOException {
-        this(new LocalControllerRateLimitHandler());
+        this(new LocalControllerRateLimitHandler(), new LocalRateLimitCallable());
     }
 
     public ControllerRateLimitInterceptor(ControllerRateLimitHandler rateLimitHandler) {
-        this.rateLimitHandler = rateLimitHandler;
+        this(rateLimitHandler, new LocalRateLimitCallable());
+    }
 
+    public ControllerRateLimitInterceptor(ControllerRateLimitHandler rateLimitHandler
+            , RateLimitCallable rateLimitCallable) {
+        this.rateLimitHandler = rateLimitHandler;
+        this.rateLimitCallable = rateLimitCallable;
+        this.daemon();
+    }
+
+    private void daemon() {
         Thread daemon = new Thread(() -> {
             while (true) {
                 try {
@@ -143,6 +151,7 @@ public class ControllerRateLimitInterceptor implements HandlerInterceptor {
                     }
                 }
                 defaultValueMaps.put(rateLimitName, resultDefaultValue);
+                rateLimitCallable.call(interfaceName, methodName);
                 try {
                     response.addHeader("Content-Type", "application/json; charset=utf-8");
                     response.getWriter().print(resultDefaultValue);
